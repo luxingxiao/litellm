@@ -7,7 +7,9 @@ RUN ollama serve & sleep 2 && ollama pull llama2
 
 RUN echo "installing litellm"
 
-RUN apt-get update
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null \
+      || sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list 2>/dev/null || true \
+  && apt-get update
 
 # Install Python
 RUN apt-get install -y python3 python3-pip
@@ -20,6 +22,6 @@ COPY . /app
 
 # Install any needed packages specified in requirements.txt
 
-RUN python3 -m pip install litellm
+RUN python3 -m pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple/ litellm
 COPY start.sh /start.sh
 ENTRYPOINT [ "/bin/bash", "/start.sh" ]

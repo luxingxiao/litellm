@@ -36,7 +36,7 @@ services:
       start_period: 40s  # Wait 40 seconds after container start before beginning health checks
 
   db:
-    image: postgres:16
+    image: docker.m.daocloud.io/library/postgres:16
     restart: always
     container_name: litellm_db
     environment:
@@ -54,7 +54,7 @@ services:
       retries: 10
 
   prometheus:
-    image: prom/prometheus
+    image: docker.m.daocloud.io/prom/prometheus
     volumes:
       - prometheus_data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
